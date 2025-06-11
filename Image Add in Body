@@ -1,0 +1,8 @@
+body: Container(
+        padding: EdgeInsets.only(bottom: 50,left: 5,right: 5),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/nin.png'),
+            fit: BoxFit.cover
+          ),
+        ),
