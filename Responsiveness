@@ -1,0 +1,23 @@
+Expanded(
+              child: LayoutBuilder(
+                  builder: (context,constraints) {
+                    int crossAxisCount = 2;
+                    if (constraints.maxWidth > 1024) {
+                      crossAxisCount = 4;
+                    } else if (constraints.maxWidth > 768) {
+                      crossAxisCount = 3;
+                    }
+                    return GridView.count(
+                      scrollDirection: Axis.vertical,
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                      children: [
+                        countryFlagCard(
+                          image: 'america.png',
+                          flag: 'America',
+                          capital: 'Washington, D.C.',
+                          population: '331M',
+                          area: '9.8M km²',
+                          language: 'English',
+                        ),
