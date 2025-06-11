@@ -1,0 +1,109 @@
+import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
+
+class Alert extends StatefulWidget {
+  const Alert({super.key});
+
+  @override
+  State<Alert> createState() => _AlertState();
+}
+
+class _AlertState extends State<Alert> {
+  // alert dialog
+ void showAlertDialog(){
+   showDialog(context: context, builder: (context)=>AlertDialog(
+     title: Text('You Clicked Alert',style: TextStyle(
+       color: Colors.red,
+       fontSize: 20,fontWeight: FontWeight.bold
+     ),),
+     content: Container(
+       height: 50, width: double.infinity,
+       child: Column(
+         crossAxisAlignment: CrossAxisAlignment.start,
+         children: [
+           Text('Are you sure to Delete Item?'),
+           SizedBox(height: 10,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+             SizedBox(
+               height: 20,
+               child: ElevatedButton(onPressed: (){
+                 //snackBar msg
+                 ScaffoldMessenger.of(context).showSnackBar(
+                   SnackBar(content: Text('Item Removed Successfully'),
+                   duration: Duration(seconds: 1),
+                   ),
+                 );
+                 //back to screen
+                 Future.delayed(Duration(seconds: 1),(){
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Alert()));
+                 });
+               },
+                   style: ElevatedButton.styleFrom(
+                     backgroundColor: Colors.red,
+                     foregroundColor: Colors.white
+                   ),
+                   child:Text('Yes',)),
+
+             ),
+              SizedBox(width: 10,),
+              SizedBox(
+                height: 20,
+                child: ElevatedButton(onPressed: (){
+                  //snackBar msg
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Item Undo Successfully'),
+                      duration: Duration(seconds: 1),
+                    ),
+                  );
+                  //back to screen
+                  Future.delayed(Duration(seconds: 1),(){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>Alert()));
+                  });
+                },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white
+                    ),
+                    child:Text('No',)),
+
+              ),
+            ],
+          )
+         ],
+       ),
+
+     ),
+   ));
+ }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Alert",style: TextStyle(
+            fontWeight: FontWeight.w700
+        ),),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+
+          children: [
+            ElevatedButton(onPressed: (){
+              showAlertDialog();
+            },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                ),
+                child: Text("Alert Dialog",style: TextStyle(color: Colors.white),))
+          ],
+        ),
+      ),
+    );
+  }
+}
