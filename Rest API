@@ -1,0 +1,84 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class restApi extends StatefulWidget {
+  const restApi({super.key});
+
+  @override
+  State<restApi> createState() => _restApiState();
+}
+
+class _restApiState extends State<restApi> {
+
+  List users = [];
+  bool isLoading = false;
+
+  //user fetch function
+ Future<void> fetchUsers() async{
+   setState(() {
+     isLoading = true;
+   });
+   final response = await http.get(Uri.parse("https://jsonplaceholder.typicode.com/users"),
+   headers: {
+     'Accept' : 'application/json'
+   });
+   log(response.body);
+
+   if(response.statusCode == 200){
+     setState(() {
+       users = jsonDecode(response.body);
+       isLoading = false;
+     });
+   }else{
+     setState(() {
+       isLoading = false;
+     });
+     throw Exception('Something wrong');
+   }
+ }
+
+ @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchUsers()
+;  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text('User List'),
+      ),
+      body: isLoading ? Center(child: CircularProgressIndicator()) : ListView.builder(
+          itemCount: users.length,
+          itemBuilder: (context,index){
+            final user = users[index];
+            return ListTile(
+              leading: CircleAvatar(
+                backgroundColor: Colors.deepPurpleAccent,
+                child: Text(user['name'][0],style: TextStyle(color: Colors.white, fontSize: 20),),
+              ),
+              title: Text(user['name']),
+              subtitle: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10,),
+                  Text('UserName: ${user['username']}',style: TextStyle(color: Colors.grey),),
+                  Text('Email: ${user['email']}',style: TextStyle(color: Colors.grey),),
+                  Text('Address: ${user['address']['street']},${user['address']['city']}',style: TextStyle(color: Colors.grey),),
+                  Text('Phone: ${user['phone']}',style: TextStyle(color: Colors.grey),),
+                  Text('Website: ${user['website']}',style: TextStyle(color: Colors.grey),),
+                  Text('Company: ${user['company']['name']}',style: TextStyle(color: Colors.grey),),
+                ],
+              ),
+            );
+          }
+      ),
+    );
+  }
+}
